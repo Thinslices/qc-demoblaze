@@ -78,10 +78,14 @@ export async function signInWithCredentials(page: Page, username: String, passwo
 
   await page.getByRole("button", { name: "Sign up" }).click();
 
-  await expect.poll(() => dialogMessage).not.toBe("");
-  expect(dialogMessage).toBe("Sign up successful.");
-
-  await expect(signInModal).toBeHidden();
+  if (username === "" && password === "") {
+    await expect.poll(() => dialogMessage, { timeout: 1000 }).not.toBe("");
+    expect(dialogMessage).toBe("Please fill out Username and Password.");
+  } else {
+    await expect.poll(() => dialogMessage, { timeout: 1000 }).not.toBe("");
+    expect(dialogMessage).toBe("Sign up successful.");
+    await expect(signInModal).toBeHidden();
+  }
 }
 
 export async function addFirstItemToCart(page: Page) {

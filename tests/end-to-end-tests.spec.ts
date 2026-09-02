@@ -35,6 +35,6 @@ test("Complete user flow", async ({ page }) => {
   await page.locator(".nav-link").getByText("Log out").click();
   await expect(welcomeUser.getByText("Welcome usernameValid")).toBeHidden();
 
-  await logInWithCredentials(page, "Teeest1", "tEEEst1");
+  await logInWithCredentials(page, username, "test");
   await sendMessage(page, "email@email.com", "Cosmin", "HELLO WORLD!");
 });
