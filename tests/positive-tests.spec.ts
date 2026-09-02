@@ -1,15 +1,15 @@
 import { test, expect } from "@playwright/test";
-import { LogIn, SignInWithCredentials, SignInWithGeneratedCredentials } from "../helpers/helper-methods";
+import { logIn, signInWithCredentials, signInWithGeneratedCredentials } from "../helpers/helper-methods";
 
 test("Check if a new user can successfully create an account with valid data", async ({ page }) => {
-  await SignInWithCredentials(page, "UsErNaMe721233432", "PaRoLa1233432");
-  await SignInWithGeneratedCredentials(page);
+  await signInWithCredentials(page, "UsErNaMe721233432", "PaRoLa1233432");
+  await signInWithGeneratedCredentials(page);
 });
 
 test("Check if a registered user can successfully login with valid credentials and log out", async ({ page }) => {
   const welcomeUser = page.locator("#nameofuser");
 
-  await LogIn(page);
+  await logIn(page);
   await page.locator(".nav-link").getByText("Log out").click();
   await expect(welcomeUser.getByText("Welcome usernameValid")).toBeHidden();
 });

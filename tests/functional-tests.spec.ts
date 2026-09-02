@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { addFirstItemToCart, orderCart, sendMessage } from "../helpers/helper-methods";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://www.demoblaze.com");
@@ -48,8 +49,7 @@ test("Check if the About us section can be opened and closed", async ({ page }) 
 });
 
 test("Check if the cart total is updated after adding or removing products", async ({ page }) => {
-  await page.locator(".card-title a").first().click();
-  await page.getByRole("link", { name: "Add to cart" }).click();
+  await addFirstItemToCart(page);
 
   await page.locator(".nav-link").getByText("Cart").click();
   const total = page.locator("#totalp");
@@ -87,42 +87,9 @@ test("Check if a user is able to place an order with valid data and receive a co
 
   await page.getByRole("button", { name: "Place Order" }).click();
 
-  await expect(orderModal).toBeVisible();
-  await page.locator(".form-group").locator("#name").fill("Nume");
-  await page.locator(".form-group").locator("#country").fill("Tara");
-  await page.locator(".form-group").locator("#city").fill("Oras");
-  await page.locator(".form-group").locator("#card").fill("0465");
-  await page.locator(".form-group").locator("#month").fill("Sept");
-  await page.locator(".form-group").locator("#year").fill("2026");
-
-  await page.getByRole("button", { name: "Purchase" }).click();
-
-  await expect(confirmationModal).toBeVisible();
-  await page.getByRole("button", { name: "OK" }).click();
+  await orderCart(page, "Cosmin", "Romania", "Iasi", "1234", "Sept", "2026");
 });
 
 test("Check if a user is able to send a message through Contact", async ({ page }) => {
-  const messageModal = page.locator("#exampleModal");
-  await expect(messageModal).toBeHidden();
-
-  await page.locator(".nav-link").getByText("Contact").click();
-  await expect(messageModal).toBeVisible();
-  await expect(messageModal).toHaveClass(/show/);
-  await page.locator(".form-group").locator("#recipient-email").fill("Contact@email.com");
-  await page.locator(".form-group").locator("#recipient-name").fill("Contact");
-  await page.locator(".form-group").locator("#message-text").fill("Mesaj");
-
-  let dialogMessage = "";
-  page.once("dialog", async (dialog) => {
-    dialogMessage = dialog.message();
-    await dialog.accept();
-  });
-
-  await page.getByRole("button", { name: "Send message" }).click();
-
-  await expect.poll(() => dialogMessage).not.toBe("");
-  expect(dialogMessage).toBe("Thanks for the message!!");
-
-
-  await expect(messageModal).toBeHidden();
+  await sendMessage(page, "email@email.com", "Cosmin", "Hello World!");
 });
