@@ -11,8 +11,8 @@ test("Check if a new user can successfully create an account with valid data", a
   await page.locator(".nav-link").getByText("Sign up").click();
   await expect(signInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#sign-username").fill(`Cosmin${Date.now()}`);
-  await page.locator(".form-group").locator("#sign-password").fill(`Parola${Date.now()}`);
+  await page.locator(".form-group").locator("#sign-username").fill(`${process.env.NEW_USER}${Date.now()}`);
+  await page.locator(".form-group").locator("#sign-password").fill(`${process.env.NEW_PASSWORD}${Date.now()}`);
 
   let dialogMessage = "";
   page.once("dialog", async (dialog) => {
@@ -36,8 +36,8 @@ test("Check if a registered user can successfully login with valid credentials a
   await page.locator(".nav-link").getByText("Log in").click();
   await expect(logInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#loginusername").fill(`usernameValid`);
-  await page.locator(".form-group").locator("#loginpassword").fill(`passwordValid`);
+  await page.locator(".form-group").locator("#loginusername").fill(`${process.env.VALID_USER}`);
+  await page.locator(".form-group").locator("#loginpassword").fill(`${process.env.VALID_PASSWORD}`);
 
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(logInModal).toBeHidden();
