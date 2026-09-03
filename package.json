@@ -10,7 +10,8 @@
     "test:e2e": "playwright test --grep @e2e",
     "test:functional": "playwright test --grep @functional",
     "test:positive": "playwright test --grep @positive",
-    "test:security": "playwright test --grep @security"
+    "test:security": "playwright test --grep @security",
+    "test:performance": "playwright test --grep @performance"
   },
   "keywords": [],
   "author": "",

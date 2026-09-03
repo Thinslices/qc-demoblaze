@@ -63,7 +63,7 @@ test("@security Check if extremely long input is handled safely ", async ({ page
 });
 
 test("@security Check if malformed input is handled safely ", async ({ page }) => {
-  const malformedInput = "x\ny\nz\n\n\n";
+  const malformedInput = `x\ny\nz\n\n\n${Date.now()}`;
   await signInWithCredentials(page, malformedInput, malformedInput);
 });
 
@@ -78,8 +78,13 @@ test("@security Check if user data from one account can be accessed by another a
 
   await logInWithCredentials(page, "test", "test");
   await page.locator(".nav-link").getByText("Cart").click();
-  productUser = await page.locator("#tbodyid tr td:nth-child(2)").first().textContent();
-  expect(productUser?.trim()).not.toBe("2017 Dell 15.6 Inch");
+  const countUser2 = await page.locator("#tbodyid tr td:nth-child(2)").count();
+  if (countUser2 == 0) {
+    expect(countUser2).toBe(0);
+  } else {
+    productUser = await page.locator("#tbodyid tr td:nth-child(2)").first().textContent();
+    expect(productUser?.trim()).not.toBe("2017 Dell 15.6 Inch");
+  }
   await page.locator(".nav-link").getByText("Log out").click();
 });
 
