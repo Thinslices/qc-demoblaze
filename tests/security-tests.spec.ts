@@ -54,7 +54,7 @@ test("Check if a user session is handled correctly after logout", async ({ page 
 
 test("Check if special characters are handled safely in username/password input", async ({ page }) => {
   await signInWithCredentials(page, `#$%^&*()${Date.now()}`, "#$%^&*()");
-  await signInWithCredentials(page, "👾👾👾", "test");
+  await signInWithCredentials(page, `👾👾👾${Date.now()}`, "test");
 });
 
 test("Check if extremely long input is handled safely ", async ({ page }) => {
