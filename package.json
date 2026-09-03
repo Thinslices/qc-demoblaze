@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:e2e": "playwright test --grep @e2e",
+    "test:functional": "playwright test --grep @functional",
+    "test:positive": "playwright test --grep @positive",
+    "test:security": "playwright test --grep @security"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

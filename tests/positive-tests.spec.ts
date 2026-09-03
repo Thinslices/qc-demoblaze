@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { logIn, signInWithCredentials, signInWithGeneratedCredentials } from "../helpers/helper-methods";
 
-test("Check if a new user can successfully create an account with valid data", async ({ page }) => {
-  await signInWithCredentials(page, "UsErNaMe721233432", "PaRoLa1233432");
+test("@positive Check if a new user can successfully create an account with valid data", async ({ page }) => {
+  await signInWithCredentials(page, `UsErNaMe721233432${Date.now()}`, "test");
   await signInWithGeneratedCredentials(page);
 });
 
-test("Check if a registered user can successfully login with valid credentials and log out", async ({ page }) => {
+test("@positive Check if a registered user can successfully login with valid credentials and log out", async ({
+  page,
+}) => {
   const welcomeUser = page.locator("#nameofuser");
 
   await logIn(page);
@@ -14,7 +16,7 @@ test("Check if a registered user can successfully login with valid credentials a
   await expect(welcomeUser.getByText("Welcome usernameValid")).toBeHidden();
 });
 
-test("Check if a user can successfully add one/multiple product(s)t to the cart + corect cart total", async ({
+test("@positive Check if a user can successfully add one/multiple product(s)t to the cart + corect cart total", async ({
   page,
 }) => {
   await page.goto("https://www.demoblaze.com");

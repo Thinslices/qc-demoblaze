@@ -8,7 +8,7 @@ import {
   sendMessage,
 } from "../helpers/helper-methods";
 
-test("Complete purchase flow", async ({ page }) => {
+test("@e2e Complete purchase flow", async ({ page }) => {
   await logIn(page);
   await page.locator(".list-group").getByText("Phones").click();
   await addItemToCart(page, "Sony xperia z5");
@@ -26,7 +26,7 @@ test("Complete purchase flow", async ({ page }) => {
   await orderCart(page, "Cosmin", "Romania", "Iasi", "1234", "Sept", "2026");
 });
 
-test("Complete user flow", async ({ page }) => {
+test("@e2e Complete user flow", async ({ page }) => {
   const welcomeUser = page.locator("#nameofuser");
   const username = `TeSt${Date.now()}`;
   await signInWithCredentials(page, username, "test");

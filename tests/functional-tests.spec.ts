@@ -5,38 +5,38 @@ test.beforeEach(async ({ page }) => {
   await page.goto("https://www.demoblaze.com");
 });
 
-test("Check if a user is able to open the homepage ", async ({ page }) => {
+test("@functional Check if a user is able to open the homepage ", async ({ page }) => {
   await page.locator(".nav-link").getByText("Home").click();
 
   await expect(page).toHaveURL("https://www.demoblaze.com/index.html");
   await expect(page.locator(".card-title")).not.toHaveCount(0);
 });
 
-test("Check if a user is able to open the Phones category", async ({ page }) => {
+test("@functional Check if a user is able to open the Phones category", async ({ page }) => {
   await page.locator(".list-group").getByText("Phones").click();
 
   await expect(page.locator(".card-title").first()).toContainText("Samsung");
 });
 
-test("Check if a user is able to open the Laptops category", async ({ page }) => {
+test("@functional Check if a user is able to open the Laptops category", async ({ page }) => {
   await page.locator(".list-group").getByText("Laptops").click();
 
   await expect(page.locator(".card-title").first()).toContainText("Sony");
 });
 
-test("Check if a user is able to open the Monitors category", async ({ page }) => {
+test("@functional Check if a user is able to open the Monitors category", async ({ page }) => {
   await page.locator(".list-group").getByText("Monitors").click();
 
   await expect(page.locator(".card-title").first()).toContainText("Apple");
 });
 
-test("Check if a user is able to open the cart ", async ({ page }) => {
+test("@functional Check if a user is able to open the cart ", async ({ page }) => {
   await page.locator(".nav-link").getByText("Cart").click();
 
   await expect(page).toHaveURL("https://www.demoblaze.com/cart.html");
 });
 
-test("Check if the About us section can be opened and closed", async ({ page }) => {
+test("@functional Check if the About us section can be opened and closed", async ({ page }) => {
   const aboutModal = page.locator("#videoModal");
   await expect(aboutModal).toBeHidden();
 
@@ -48,7 +48,7 @@ test("Check if the About us section can be opened and closed", async ({ page }) 
   await expect(aboutModal).toBeHidden();
 });
 
-test("Check if the cart total is updated after adding or removing products", async ({ page }) => {
+test("@functional Check if the cart total is updated after adding or removing products", async ({ page }) => {
   await addFirstItemToCart(page);
 
   await page.locator(".nav-link").getByText("Cart").click();
@@ -65,7 +65,7 @@ test("Check if the cart total is updated after adding or removing products", asy
   await expect(total).toHaveText("", { timeout: 10000 });
 });
 
-test("Check if a user is able to place an order with valid data and receive a confirmation message", async ({
+test("@functional Check if a user is able to place an order with valid data and receive a confirmation message", async ({
   page,
 }) => {
   const orderModal = page.locator("#orderModalLabel");
@@ -90,6 +90,6 @@ test("Check if a user is able to place an order with valid data and receive a co
   await orderCart(page, "Cosmin", "Romania", "Iasi", "1234", "Sept", "2026");
 });
 
-test("Check if a user is able to send a message through Contact", async ({ page }) => {
+test("@functional Check if a user is able to send a message through Contact", async ({ page }) => {
   await sendMessage(page, "email@email.com", "Cosmin", "Hello World!");
 });

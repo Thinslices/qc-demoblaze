@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("https://www.demoblaze.com");
 });
 
-test("Check if password fields are masked", async ({ page }) => {
+test("@security Check if password fields are masked", async ({ page }) => {
   const signInModal = page.locator("#signInModal");
   const logInModal = page.locator("#logInModal");
   await expect(logInModal).toBeHidden();
@@ -30,11 +30,11 @@ test("Check if password fields are masked", async ({ page }) => {
   await signInModal.getByRole("button", { name: "Close", exact: true }).and(page.locator(".btn-secondary")).click();
 });
 
-test("Check if authentication rejects invalid/empty credentials", async ({ page }) => {
+test("@security Check if authentication rejects invalid/empty credentials", async ({ page }) => {
   await signInWithCredentials(page, "", "");
 });
 
-test("Check if a user session is handled correctly after logout", async ({ page }) => {
+test("@security Check if a user session is handled correctly after logout", async ({ page }) => {
   const welcomeUser = page.locator("#nameofuser");
   await logIn(page);
 
@@ -52,22 +52,22 @@ test("Check if a user session is handled correctly after logout", async ({ page 
   expect(tokenAfter).toBeUndefined();
 });
 
-test("Check if special characters are handled safely in username/password input", async ({ page }) => {
+test("@security Check if special characters are handled safely in username/password input", async ({ page }) => {
   await signInWithCredentials(page, `#$%^&*()${Date.now()}`, "#$%^&*()");
   await signInWithCredentials(page, `👾👾👾${Date.now()}`, "test");
 });
 
-test("Check if extremely long input is handled safely ", async ({ page }) => {
+test("@security Check if extremely long input is handled safely ", async ({ page }) => {
   const longInput = `${"x".repeat(10000)}${Date.now()}`;
   await signInWithCredentials(page, longInput, longInput);
 });
 
-test("Check if malformed input is handled safely ", async ({ page }) => {
+test("@security Check if malformed input is handled safely ", async ({ page }) => {
   const malformedInput = "x\ny\nz\n\n\n";
   await signInWithCredentials(page, malformedInput, malformedInput);
 });
 
-test("Check if user data from one account can be accessed by another account", async ({ page }) => {
+test("@security Check if user data from one account can be accessed by another account", async ({ page }) => {
   await logIn(page);
   await page.locator(".list-group").getByText("Laptops").click();
   await addItemToCart(page, "2017 Dell 15.6 Inch");
@@ -83,7 +83,7 @@ test("Check if user data from one account can be accessed by another account", a
   await page.locator(".nav-link").getByText("Log out").click();
 });
 
-test(`Check if common injection-style inputs are handled safely`, async ({ page }) => {
+test("@security Check if common injection-style inputs are handled safely", async ({ page }) => {
   for (const { name, value } of payloadInjections) {
     let alert = false;
 
@@ -109,7 +109,7 @@ test(`Check if common injection-style inputs are handled safely`, async ({ page 
   }
 });
 
-test("Check if application errors expose sensitive technical information", async ({ page }) => {
+test("@security Check if application errors expose sensitive technical information", async ({ page }) => {
   const suspiciousAnswers: string[] = [];
 
   page.on("response", async (response) => {
@@ -127,7 +127,7 @@ test("Check if application errors expose sensitive technical information", async
   expect(suspiciousAnswers).toEqual([]);
 });
 
-test("Check if sensitive information is unnecessarily visible in requests/responses", async ({ page }) => {
+test("@security Check if sensitive information is unnecessarily visible in requests/responses", async ({ page }) => {
   const foundIssues: string[] = [];
 
   page.on("request", (request) => {
@@ -148,7 +148,7 @@ test("Check if sensitive information is unnecessarily visible in requests/respon
   expect(foundIssues).toEqual([]);
 });
 
-test("Check if security-related headers are present", async ({ page }) => {
+test("@security Check if security-related headers are present", async ({ page }) => {
   const response = await page.goto("https://www.demoblaze.com");
   const headers = response?.headers() ?? {};
 
