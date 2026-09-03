@@ -9,15 +9,15 @@ export async function logIn(page: Page) {
   await page.locator(".nav-link").getByText("Log in").click();
   await expect(logInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#loginusername").fill(`${process.env.VALID_USER}`);
-  await page.locator(".form-group").locator("#loginpassword").fill(`${process.env.VALID_PASSWORD}`);
+  await page.locator("#loginusername").fill(`${process.env.VALID_USER}`);
+  await page.locator("#loginpassword").fill(`${process.env.VALID_PASSWORD}`);
 
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(logInModal).toBeHidden();
   await expect(welcomeUser.getByText("Welcome usernameValid")).toBeVisible();
 }
 
-export async function logInWithCredentials(page: Page, username: String, password: String) {
+export async function logInWithCredentials(page: Page, username: string, password: string) {
   await page.goto("https://www.demoblaze.com");
   const logInModal = page.locator("#logInModal");
   await expect(logInModal).toBeHidden();
@@ -26,8 +26,8 @@ export async function logInWithCredentials(page: Page, username: String, passwor
   await page.locator(".nav-link").getByText("Log in").click();
   await expect(logInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#loginusername").fill(`${username}`);
-  await page.locator(".form-group").locator("#loginpassword").fill(`${password}`);
+  await page.locator("#loginusername").fill(`${username}`);
+  await page.locator("#loginpassword").fill(`${password}`);
 
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(logInModal).toBeHidden();
@@ -42,8 +42,8 @@ export async function signInWithGeneratedCredentials(page: Page) {
   await page.locator(".nav-link").getByText("Sign up").click();
   await expect(signInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#sign-username").fill(`${process.env.NEW_USER}${Date.now()}`);
-  await page.locator(".form-group").locator("#sign-password").fill(`${process.env.NEW_PASSWORD}${Date.now()}`);
+  await page.locator("#sign-username").fill(`${process.env.NEW_USER}${Date.now()}`);
+  await page.locator("#sign-password").fill(`${process.env.NEW_PASSWORD}${Date.now()}`);
 
   let dialogMessage = "";
   page.once("dialog", async (dialog) => {
@@ -59,7 +59,7 @@ export async function signInWithGeneratedCredentials(page: Page) {
   await expect(signInModal).toBeHidden();
 }
 
-export async function signInWithCredentials(page: Page, username: String, password: String) {
+export async function signInWithCredentials(page: Page, username: string, password: string) {
   await page.goto("https://www.demoblaze.com");
   const signInModal = page.locator("#signInModal");
   await expect(signInModal).toBeHidden();
@@ -67,8 +67,8 @@ export async function signInWithCredentials(page: Page, username: String, passwo
   await page.locator(".nav-link").getByText("Sign up").click();
   await expect(signInModal).toBeVisible();
 
-  await page.locator(".form-group").locator("#sign-username").fill(`${username}`);
-  await page.locator(".form-group").locator("#sign-password").fill(`${password}`);
+  await page.locator("#sign-username").fill(`${username}`);
+  await page.locator("#sign-password").fill(`${password}`);
 
   let dialogMessage = "";
   page.once("dialog", async (dialog) => {
@@ -77,12 +77,19 @@ export async function signInWithCredentials(page: Page, username: String, passwo
   });
 
   await page.getByRole("button", { name: "Sign up" }).click();
+  await expect.poll(() => dialogMessage, { timeout: 1000 }).not.toBe("");
 
-  if (username === "" && password === "") {
-    await expect.poll(() => dialogMessage, { timeout: 1000 }).not.toBe("");
+  const specialCharactersCheck = /^[a-zA-Z0-9]+$/.test(username) && /^[a-zA-Z0-9]+$/.test(password);
+  const emptyStringCheck = username === "" || password === "";
+  const longInputCheck = username.length > 50 || password.length > 50;
+
+  if (emptyStringCheck) {
     expect(dialogMessage).toBe("Please fill out Username and Password.");
+  } else if (!specialCharactersCheck) {
+    expect(dialogMessage).toBe("Special characters are not allowed.");
+  } else if (longInputCheck) {
+    expect(dialogMessage).toBe("Special characters are not allowed.");
   } else {
-    await expect.poll(() => dialogMessage, { timeout: 1000 }).not.toBe("");
     expect(dialogMessage).toBe("Sign up successful.");
     await expect(signInModal).toBeHidden();
   }
@@ -94,7 +101,7 @@ export async function addFirstItemToCart(page: Page) {
   await page.locator(".nav-link").getByText("Home").click();
 }
 
-export async function addItemToCart(page: Page, item: String) {
+export async function addItemToCart(page: Page, item: string) {
   await page.locator(".card-title a").getByText(`${item}`).click();
   await page.getByRole("link", { name: "Add to cart" }).click();
   await page.locator(".nav-link").getByText("Home").click();
@@ -102,12 +109,12 @@ export async function addItemToCart(page: Page, item: String) {
 
 export async function orderCart(
   page: Page,
-  name: String,
-  country: String,
-  city: String,
-  card: String,
-  month: String,
-  year: String,
+  name: string,
+  country: string,
+  city: string,
+  card: string,
+  month: string,
+  year: string,
 ) {
   const orderModal = page.locator("#orderModalLabel");
   await expect(orderModal).toBeHidden();
@@ -128,7 +135,7 @@ export async function orderCart(
   await page.getByRole("button", { name: "OK" }).click();
 }
 
-export async function sendMessage(page: Page, email: String, contactName: String, message: String) {
+export async function sendMessage(page: Page, email: string, contactName: string, message: string) {
   await page.goto("https://www.demoblaze.com");
   const messageModal = page.locator("#exampleModal");
   await expect(messageModal).toBeHidden();

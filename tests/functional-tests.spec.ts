@@ -55,7 +55,7 @@ test("@functional Check if the cart total is updated after adding or removing pr
   const total = page.locator("#totalp");
   await expect(total).not.toHaveText("", { timeout: 10000 });
 
-  expect(total).toHaveText(/^\d+$/);
+  await expect(total).toHaveText(/^\d+$/);
 
   const totalDupaAdaugare = Number(await total.textContent());
   expect(totalDupaAdaugare).toBeGreaterThan(0);
@@ -80,7 +80,7 @@ test("@functional Check if a user is able to place an order with valid data and 
   const total = page.locator("#totalp");
   await expect(total).not.toHaveText("", { timeout: 10000 });
 
-  expect(total).toHaveText(/^\d+$/);
+  await expect(total).toHaveText(/^\d+$/);
 
   const totalDupaAdaugare = Number(await total.textContent());
   expect(totalDupaAdaugare).toBeGreaterThan(0);
